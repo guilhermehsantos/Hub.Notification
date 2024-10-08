@@ -1,15 +1,12 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { IProductGateway } from '../interfaces/IProductGateway';
-import { Status } from 'src/core/common/enums/status';
-import { Exception } from 'src/core/common/exception/Exception';
-import { Code } from 'src/core/common/code/Code';
+import { Status } from 'src3/core/common/enums/status';
+import { Exception } from 'src3/core/common/exception/Exception';
+import { Code } from 'src3/core/common/code/Code';
 
 @Injectable()
 export class ProductUseCase {
-  constructor(
-    @Inject('IProductGateway')
-    private readonly _productRepository: IProductGateway,
-  ) {}
+  constructor(private _productRepository: IProductGateway) {}
 
   async findProductByKey(id: string, status: Status) {
     if (!id && !status) {

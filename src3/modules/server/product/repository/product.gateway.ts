@@ -4,15 +4,12 @@ import { Product } from '../../../../infra/db/typeORM/entities/product';
 // import { ProductEntity } from '../entity/product.entity';
 // import { Status } from 'src/core/common/enums/status';
 import { Repository } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class ProductGateway implements IProductGateway {
-  constructor(
-    @InjectRepository(Product)
-    private readonly _productRepository: Repository<Product>,
-  ) {}
-  findByParams(id: string, status: number): Promise<Product | null> {
+  constructor(private _productRepository: Repository<Product>) {}
+
+  async findByParams(id: string, status: number): Promise<Product | null> {
     return this._productRepository.findOne({ where: { id, status } });
   }
 }

@@ -1,4 +1,4 @@
-import { Status } from 'src/core/common/enums/status';
+import { Status } from 'src3/core/common/enums/status';
 
 export class ProductEntity {
   id: string;

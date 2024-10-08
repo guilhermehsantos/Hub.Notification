@@ -1,4 +1,4 @@
-import { Priority } from 'src/core/common/enums/priority';
+import { Priority } from 'src3/core/common/enums/priority';
 type MessageFile = {
   name: string;
   url: string;

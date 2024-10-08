@@ -1,22 +1,22 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 // import { ProductEntity } from './entity/product.entity';
-import { Product } from 'src/infra/db/typeORM/entities/product';
+import { Product } from 'src3/infra/db/typeORM/entities/product';
 import { ProductGateway } from './repository/product.gateway';
 import { ProductUseCase } from './useCases/product.usecase';
-import { Repository } from 'typeorm';
+import { IProductGateway } from './interfaces/IProductGateway';
 // import {IProductRepository} from './interfaces/IProductRepository';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Product])],
-  controllers: [],
   providers: [
     ProductUseCase,
     ProductGateway,
     {
-      provide: 'IProductGateway',
+      provide: IProductGateway,
       useClass: ProductGateway,
     },
   ],
+  exports: [IProductGateway],
 })
 export class ProductModule {}

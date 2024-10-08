@@ -1,8 +1,8 @@
 import { ProductEntity } from '../entity/product.entity';
-import { Product } from 'src/infra/db/typeORM/entities/product';
+import { Product } from 'src/infra/database/typeORM/entities/product';
 
 export class ProductMapper {
-  static toDomain(ProductEntity: ProductEntity): Product {
+  static toPersist(ProductEntity: ProductEntity): Product {
     const product = new Product();
     product.id = ProductEntity.id;
     product.name = ProductEntity.name;
@@ -14,7 +14,7 @@ export class ProductMapper {
     return product;
   }
 
-  static toEntity(Product: Product): ProductEntity {
+  static toDomain(Product: Product): ProductEntity {
     const productEntity = new ProductEntity(
       Product.id,
       Product.name,
