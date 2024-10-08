@@ -88,8 +88,8 @@ Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
 
 To createe a new migration:
 
-- npm run migration:generate -- -d src/infra/db/typeORM/data-source.ts
+- npm run migration:generate -- -d src/infra/database/typeORM/data-source.ts
 
 To execute migration:
 
-- npm run migration:run -- -d src/infra/db/typeORM/data-source.ts
+- npm run migration:run -- -d src/infra/database/typeORM/data-source.ts
