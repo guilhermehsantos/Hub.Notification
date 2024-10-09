@@ -5,26 +5,20 @@ import { BlackListPhone } from './entities/blackListPhone';
 import { InstanceZAPI } from './entities/instanceZAPI';
 import { MessageTemplate } from './entities/messageTemplate';
 import { Product } from './entities/product';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { EnvConfig } from '../../config/configuration';
 
-ConfigModule.forRoot({
-  isGlobal: true,
-  envFilePath: '../../../../.env',
-});
-
-const configService = new ConfigService();
-console.log('DB_HOST:', configService.get<string>('DB_HOST'));
-console.log('DB_USERNAME:', configService.get<string>('DB_USERNAME'));
-console.log('DB_PASSWORD:', configService.get<string>('DB_PASSWORD'));
-console.log('DB_NAME:', configService.get<string>('DB_NAME'));
+console.log('DB_HOST:', EnvConfig.DATABASE_HOST);
+console.log('DB_USERNAME:', EnvConfig.DATABASE_USERNAME);
+console.log('DB_PASSWORD:', EnvConfig.DATABASE_PASSWORD);
+console.log('DB_NAME:', EnvConfig.DATABASE);
 
 export const AppDataSource = new DataSource({
   type: 'postgres',
-  host: configService.get<string>('DATABASE_HOST') || 'localhost',
-  port: configService.get<number>('DATABASE_PORT') || 5432,
-  username: configService.get<string>('DATABASE_NAME') || 'postgres',
-  password: configService.get<string>('DATABASE_PASSWORD') || 'postgres',
-  database: configService.get<string>('DATABASE') || 'notification',
+  host: EnvConfig.DATABASE_HOST || 'localhost',
+  port: EnvConfig.DATABASE_PORT || 5432,
+  username: EnvConfig.DATABASE_USERNAME || 'postgres',
+  password: EnvConfig.DATABASE_PASSWORD || 'postgres',
+  database: EnvConfig.DATABASE || 'notification',
   entities: [
     Company,
     PhoneNumber,

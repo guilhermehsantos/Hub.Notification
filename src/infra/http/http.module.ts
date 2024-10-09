@@ -5,7 +5,7 @@ import { ProductController } from './controllers/product.controller';
 import { AuthMiddleware } from './middlewares/auth.middleware';
 import { MessageController } from './controllers/message.controller';
 import { MessagingModule } from '../messaging/messaging.module';
-import { PublishMessage } from 'src/application/use-cases/messaging/publish-message';
+import { PublishMessageWhatsApp } from 'src/application/use-cases/messaging/publish-message.whatsapp';
 import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
 
 @Module({
@@ -23,7 +23,7 @@ import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
     }),
   ],
   controllers: [ProductController, MessageController],
-  providers: [GetProductByKey, PublishMessage],
+  providers: [GetProductByKey, PublishMessageWhatsApp],
 })
 export class HttpModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

@@ -1,5 +1,6 @@
 import {
   Injectable,
+  Logger,
   NestMiddleware,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -9,6 +10,7 @@ import { ProductGateway } from 'src/application/repositories/product-gateway';
 
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
+  logger: Logger = new Logger('AuthMiddleware');
   constructor(private productGateway: ProductGateway) {}
 
   async use(req: Request, res: Response, next: NextFunction) {
@@ -27,7 +29,9 @@ export class AuthMiddleware implements NestMiddleware {
       throw new UnauthorizedException('Invalid API key');
     }
 
-    console.log(`${key.getName()} request`);
+    req.body.productKey = apiKey;
+    req.body.product = key.getName();
+    this.logger.log(`Access ${key.getName()} product`);
 
     next();
   }

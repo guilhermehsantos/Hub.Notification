@@ -1,6 +1,5 @@
 import { AmqpConnection, RabbitSubscribe } from '@golevelup/nestjs-rabbitmq';
 import { Injectable } from '@nestjs/common';
-// import { ConsumerMessage } from 'amqplib';
 
 @Injectable()
 export class MessageConsumer {
@@ -15,10 +14,7 @@ export class MessageConsumer {
       deadLetterRoutingKey: 'qyon.crm.notification.high.priority.dlq',
     },
   })
-  public async onQueueConsumptionHighPriority(
-    msg,
-    // amqpMsg: ConsumerMessage,
-  ): Promise<void> {
+  public async onQueueConsumptionHighPriority(msg): Promise<void> {
     console.log(`[Consume message by high priority`);
     console.log(msg);
   }
@@ -32,10 +28,7 @@ export class MessageConsumer {
       deadLetterRoutingKey: 'qyon.crm.notification.low.priority.dlq',
     },
   })
-  public async onQueueConsumptionLowPriority(
-    msg,
-    // amqpMsg: ConsumerMessage,
-  ): Promise<void> {
+  public async onQueueConsumptionLowPriority(msg): Promise<void> {
     console.log(`[Consume message by low priority`);
     console.log(msg);
   }
