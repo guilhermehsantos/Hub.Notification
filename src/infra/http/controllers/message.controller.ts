@@ -2,6 +2,7 @@ import { Body, Controller, Logger, Post } from '@nestjs/common';
 import { PostNewMessageDto } from '../dtos/message/new-message.dto';
 import { PublishMessageWhatsApp } from 'src/application/use-cases/messaging/publish-message.whatsapp';
 import { randomUUID } from 'crypto';
+import { MessageDTO } from 'src/infra/messaging/dtos/messageDTO';
 
 @Controller('message')
 export class MessageController {
@@ -15,14 +16,21 @@ export class MessageController {
     const requestId = randomUUID();
     this.logger.log(`[${requestId}] New message received by ${body.product}`);
 
-    await this.messagePublisher.execute({
+    const message: MessageDTO = {
       id: requestId.toString(),
+      company: {
+        id: body.companyId,
+        cnpj: body.cnpj,
+      },
+      template: body.content.template,
       to: body.content.to,
-      priority: body.priority,
-      file: body.content.file,
       message: body.content.message,
+      file: body.content.file,
+      priority: body.priority,
       type: body.provider,
-    });
+    };
+
+    await this.messagePublisher.execute(message);
 
     return {
       id: requestId.toString(),

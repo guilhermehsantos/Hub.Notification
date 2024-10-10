@@ -1,11 +1,11 @@
-import { Status } from 'src3/core/common/enums/status';
 import { Replace } from 'src/helpers/Replace';
+import { EStatus } from '../common/enums/status';
 
 export interface ProductPayload {
   name: string;
   key: string;
   deleted: boolean;
-  status: Status;
+  status: EStatus;
   updatedAt: Date;
   createdAt: Date;
 }
@@ -16,7 +16,7 @@ export class ProductEntity {
 
   constructor(
     id: string,
-    props: Replace<ProductPayload, { CreatedAt?: Date }>,
+    props: Replace<ProductPayload, { createdAt?: Date }>,
   ) {
     this._id = id;
     this.props = {
@@ -41,7 +41,7 @@ export class ProductEntity {
     return this.props.deleted;
   }
 
-  public getStatus(): Status {
+  public getStatus(): EStatus {
     return this.props.status;
   }
 
@@ -65,7 +65,7 @@ export class ProductEntity {
     this.props.deleted = value;
   }
 
-  public setStatus(value: Status): void {
+  public setStatus(value: EStatus): void {
     this.props.status = value;
   }
 

@@ -1,18 +1,60 @@
+import * as dotenv from 'dotenv';
 import { get } from 'env-var';
 
-export class EnvConfig {
-  public static readonly PORT = get('PORT').asPortNumber();
-  public static readonly NODE_ENV = get('NODE_ENV').asString();
-  public static readonly RABBITMQ_URL = get('RABBITMQ_URL').asString();
-  public static readonly RABBITMQ_USER = get('RABBITMQ_USER').asString();
-  public static readonly RABBITMQ_PASS = get('RABBITMQ_PASS').asString();
+dotenv.config();
 
-  //database
-  public static readonly DATABASE_HOST = get('DATABASE_HOST').asString();
-  public static readonly DATABASE_PORT = get('DATABASE_PORT').asPortNumber();
-  public static readonly DATABASE_USERNAME =
-    get('DATABASE_USERNAME').asString();
-  public static readonly DATABASE_PASSWORD =
-    get('DATABASE_PASSWORD').asString();
-  public static readonly DATABASE = get('DATABASE').asString();
+export class EnvConfig {
+  //server----------------------------------------------------------------------------------------
+  public static readonly PORT = get('PORT').required().asPortNumber();
+  public static readonly NODE_ENV = get('NODE_ENV').required().asString();
+
+  //rabbitMQ--------------------------------------------------------------------------------------
+  public static readonly RABBITMQ_URL = get('RABBITMQ_URL')
+    .required()
+    .asString();
+  public static readonly RABBITMQ_USER = get('RABBITMQ_USER')
+    .required()
+    .asString();
+  public static readonly RABBITMQ_PASS = get('RABBITMQ_PASS')
+    .required()
+    .asString();
+
+  public static readonly EXCHANGE = get('EXCHANGE').required().asString();
+  public static readonly WHATSAPP_QUEUE_HIGH_PRIORITY = get(
+    'WHATSAPP_QUEUE_HIGH_PRIORITY',
+  )
+    .required()
+    .asString();
+
+  public static readonly WHATSAPP_QUEUE_LOW_PRIORITY = get(
+    'WHATSAPP_QUEUE_LOW_PRIORITY',
+  )
+    .required()
+    .asString();
+
+  //database--------------------------------------------------------------------------------------
+  public static readonly DATABASE_HOST = get('DATABASE_HOST')
+    .required()
+    .asString();
+  public static readonly DATABASE_PORT = get('DATABASE_PORT')
+    .required()
+    .asPortNumber();
+  public static readonly DATABASE_USERNAME = get('DATABASE_USERNAME')
+    .required()
+    .asString();
+  public static readonly DATABASE_PASSWORD = get('DATABASE_PASSWORD')
+    .required()
+    .asString();
+  public static readonly DATABASE = get('DATABASE').required().asString();
+
+  //ZPAI------------------------------------------------------------------------------------------
+  public static readonly ZAPI_CLIENT_TOKEN = get('ZAPI_CLIENT')
+    .required()
+    .asString();
+
+  public static readonly ZAPI_URL = get('ZAPI_URL').required().asString();
+
+  public static readonly ZAPI_PARTNER_TOKEN = get('ZAPI_PARTNER_TOKEN')
+    .required()
+    .asString();
 }

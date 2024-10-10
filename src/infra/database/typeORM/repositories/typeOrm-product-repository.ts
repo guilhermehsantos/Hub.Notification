@@ -20,8 +20,6 @@ export class TypeOrmProductRepository implements ProductGateway {
     key: string,
     status: number,
   ): Promise<ProductEntity | null> {
-    this.logger.log({ key, status });
-
     const product = await this._productRepository.findOne({
       where: { key, status },
     });

@@ -1,13 +1,15 @@
 import { IsString } from 'class-validator';
 import { randomUUID } from 'crypto';
 import { Replace } from 'src/helpers/Replace';
+import { EStatus } from '../common/enums/status';
 
 export interface CompanyPayload {
   name: string;
   cnpj: string;
   createdAt: Date;
-  status: string;
+  status: EStatus;
   deleted: boolean;
+  default: number;
 }
 
 export class CompanyEntity {
@@ -16,8 +18,8 @@ export class CompanyEntity {
   private props: CompanyPayload;
 
   constructor(
-    props: Replace<CompanyPayload, { CreatedAt?: Date }>,
     id: string,
+    props: Replace<CompanyPayload, { createdAt?: Date }>,
   ) {
     this._id = id || randomUUID();
     this.props = {
@@ -27,7 +29,7 @@ export class CompanyEntity {
     Object.assign(this, props);
   }
 
-  public get id() {
+  public getId() {
     return this._id;
   }
 
@@ -43,12 +45,16 @@ export class CompanyEntity {
     return this.props.createdAt;
   }
 
-  public getStatus(): string {
+  public getStatus(): EStatus {
     return this.props.status;
   }
 
   public getDeleted(): boolean {
     return this.props.deleted;
+  }
+
+  public getDefault(): number {
+    return this.props.default;
   }
 
   public setName(value: string): void {
@@ -63,11 +69,15 @@ export class CompanyEntity {
     this.props.createdAt = value;
   }
 
-  public setStatus(value: string): void {
+  public setStatus(value: EStatus): void {
     this.props.status = value;
   }
 
   public setDeleted(value: boolean): void {
     this.props.deleted = value;
+  }
+
+  public setDefault(value: number): void {
+    this.props.default = value;
   }
 }

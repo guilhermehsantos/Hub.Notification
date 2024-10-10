@@ -24,4 +24,7 @@ export class Company {
 
   @Column({ type: 'boolean', default: false })
   deleted: boolean;
+
+  @Column({ type: 'int', default: 0 })
+  default: number;
 }

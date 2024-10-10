@@ -7,18 +7,14 @@ import { MessageTemplate } from './entities/messageTemplate';
 import { Product } from './entities/product';
 import { EnvConfig } from '../../config/configuration';
 
-console.log('DB_HOST:', EnvConfig.DATABASE_HOST);
-console.log('DB_USERNAME:', EnvConfig.DATABASE_USERNAME);
-console.log('DB_PASSWORD:', EnvConfig.DATABASE_PASSWORD);
-console.log('DB_NAME:', EnvConfig.DATABASE);
-
 export const AppDataSource = new DataSource({
   type: 'postgres',
-  host: EnvConfig.DATABASE_HOST || 'localhost',
-  port: EnvConfig.DATABASE_PORT || 5432,
-  username: EnvConfig.DATABASE_USERNAME || 'postgres',
-  password: EnvConfig.DATABASE_PASSWORD || 'postgres',
-  database: EnvConfig.DATABASE || 'notification',
+  host: EnvConfig.DATABASE_HOST,
+  port: EnvConfig.DATABASE_PORT,
+  username: EnvConfig.DATABASE_USERNAME,
+  password: EnvConfig.DATABASE_PASSWORD,
+  database: EnvConfig.DATABASE,
+  // entities: ['src/infra/database/typeORM/entities/*.{ts,js}'],
   entities: [
     Company,
     PhoneNumber,
@@ -27,7 +23,7 @@ export const AppDataSource = new DataSource({
     MessageTemplate,
     Product,
   ],
-  migrations: ['src/infra/db/typeORM/migrations/*.ts'],
+  migrations: ['src/infra/database/typeORM/migrations/*.js'],
   synchronize: false,
   logging: true,
 });

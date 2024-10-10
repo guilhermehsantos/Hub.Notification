@@ -1,14 +1,15 @@
-import { Priority } from 'src/application/common/enums/priority';
-import { Provider } from 'src/application/common/enums/provider';
+import { EPriority } from 'src/application/common/enums/priority';
+import { EProvider } from 'src/application/common/enums/provider';
 
 export class PostNewMessageDto {
   cnpj: string;
+  companyId: string;
   productKey: string;
   product: string;
   userEmail: string;
-  priority: Priority;
+  priority: EPriority;
   type: string;
-  provider: Provider;
+  provider: EProvider;
   content: {
     template: string;
     to: string;

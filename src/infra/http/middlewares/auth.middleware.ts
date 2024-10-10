@@ -5,7 +5,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
-import { Status } from 'src/application/common/enums/status';
+import { EStatus } from 'src/application/common/enums/status';
 import { ProductGateway } from 'src/application/repositories/product-gateway';
 
 @Injectable()
@@ -22,7 +22,7 @@ export class AuthMiddleware implements NestMiddleware {
 
     const key = await this.productGateway.findByParams(
       apiKey.toString(),
-      Status.ACTIVE,
+      EStatus.ACTIVE,
     );
 
     if (!key) {
@@ -31,6 +31,7 @@ export class AuthMiddleware implements NestMiddleware {
 
     req.body.productKey = apiKey;
     req.body.product = key.getName();
+    req.body.companyId = null;
     this.logger.log(`Access ${key.getName()} product`);
 
     next();

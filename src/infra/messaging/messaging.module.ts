@@ -1,56 +1,54 @@
 import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { MessagePublisher } from './publishers/message.publisher';
 import { MessageConsumer } from './consumers/message.consumer';
-
+import { EnvConfig } from '../config/configuration';
+import { HttpModule } from '../http/http.module';
 @Module({
   imports: [
+    forwardRef(() => HttpModule),
     RabbitMQModule.forRoot(RabbitMQModule, {
       exchanges: [
         {
-          name: 'qyon.crm.notification',
+          name: EnvConfig.EXCHANGE,
           type: 'topic',
         },
       ],
       uri: 'amqp://local:local@localhost:5672',
       queues: [
         {
-          name: 'qyon.crm.notification.high.priority',
+          name: EnvConfig.WHATSAPP_QUEUE_HIGH_PRIORITY,
           options: {
             arguments: {
-              'x-dead-letter-routing-key':
-                'qyon.crm.notification.high.priority.dlq',
-              'x-dead-letter-exchange': 'qyon.crm.notification',
+              'x-dead-letter-routing-key': `${EnvConfig.WHATSAPP_QUEUE_HIGH_PRIORITY}.dlq`,
+              'x-dead-letter-exchange': EnvConfig.EXCHANGE,
             },
           },
         },
         {
-          name: 'qyon.crm.notification.low.priority',
+          name: EnvConfig.WHATSAPP_QUEUE_LOW_PRIORITY,
           options: {
             arguments: {
-              'x-dead-letter-routing-key':
-                'qyon.crm.notification.low.priority.dlq',
-              'x-dead-letter-exchange': 'qyon.crm.notification',
+              'x-dead-letter-routing-key': `${EnvConfig.WHATSAPP_QUEUE_LOW_PRIORITY}.dlq`,
+              'x-dead-letter-exchange': EnvConfig.EXCHANGE,
             },
           },
         },
         {
-          name: 'qyon.crm.notification.low.priority.dlq',
+          name: `${EnvConfig.WHATSAPP_QUEUE_LOW_PRIORITY}.dlq`,
           options: {
             arguments: {
-              'x-dead-letter-routing-key':
-                'qyon.crm.notification.low.priority.dlq',
-              'x-dead-letter-exchange': 'qyon.crm.notification',
+              'x-dead-letter-routing-key': `${EnvConfig.WHATSAPP_QUEUE_LOW_PRIORITY}.dlq`,
+              'x-dead-letter-exchange': EnvConfig.EXCHANGE,
             },
           },
         },
         {
-          name: 'qyon.crm.notification.high.priority.dlq',
+          name: `${EnvConfig.WHATSAPP_QUEUE_HIGH_PRIORITY}.dlq`,
           options: {
             arguments: {
-              'x-dead-letter-routing-key':
-                'qyon.crm.notification.high.priority.dlq',
-              'x-dead-letter-exchange': 'qyon.crm.notification',
+              'x-dead-letter-routing-key': `${EnvConfig.WHATSAPP_QUEUE_HIGH_PRIORITY}.dlq`,
+              'x-dead-letter-exchange': EnvConfig.EXCHANGE,
             },
           },
         },

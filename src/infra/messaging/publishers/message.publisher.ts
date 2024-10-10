@@ -1,20 +1,12 @@
 import { AmqpConnection } from '@golevelup/nestjs-rabbitmq';
 import { Injectable, Logger } from '@nestjs/common';
-import { Priority } from 'src/application/common/enums/priority';
-import { Provider } from 'src/application/common/enums/provider';
+import { EnvConfig } from 'src/infra/config/configuration';
+import { MessageDTO } from '../dtos/messageDTO';
 
-export type MessagePayload = {
-  id: string;
-  priority: Priority;
-  message: string;
-  to: string;
-  file: string;
-  type: Provider;
-};
 export const ProviderQueue = {
   whatsapp: {
-    highPriority: 'qyon.crm.notification.high.priority',
-    lowPriority: 'qyon.crm.notification.low.priority',
+    highPriority: EnvConfig.WHATSAPP_QUEUE_HIGH_PRIORITY,
+    lowPriority: EnvConfig.WHATSAPP_QUEUE_LOW_PRIORITY,
   },
 };
 
@@ -22,17 +14,13 @@ export const ProviderQueue = {
 export class MessagePublisher {
   logger: Logger;
   private exchange: string;
-  private lowPriorityQueue: string;
-  private highPriorityQueue: string;
 
   constructor(private readonly amqpConnection: AmqpConnection) {
     this.logger = new Logger('MessagePublisher');
-    this.exchange = 'qyon.crm.notification';
-    this.lowPriorityQueue = 'qyon.crm.notification.low.priority';
-    this.highPriorityQueue = 'qyon.crm.notification.high.priority';
+    this.exchange = EnvConfig.EXCHANGE;
   }
 
-  public async publishToHighPriorityQueue(eventData: MessagePayload) {
+  public async publishToHighPriorityQueue(eventData: MessageDTO) {
     const queue = ProviderQueue[eventData.type].highPriority;
     try {
       this.logger.log(`[${eventData.id}] Publish event to ${queue}`);
@@ -46,7 +34,7 @@ export class MessagePublisher {
     }
   }
 
-  public async publishToLowPriorityhQueue(eventData: MessagePayload) {
+  public async publishToLowPriorityhQueue(eventData: MessageDTO) {
     const queue = ProviderQueue[eventData.type].lowPriority;
 
     try {

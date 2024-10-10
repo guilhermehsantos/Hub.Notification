@@ -1,4 +1,9 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import {
+  forwardRef,
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+} from '@nestjs/common';
 import { DatabaseModule } from '../database/database.module';
 import { GetProductByKey } from 'src/application/use-cases/product/get-product-by-key';
 import { ProductController } from './controllers/product.controller';
@@ -7,23 +12,30 @@ import { MessageController } from './controllers/message.controller';
 import { MessagingModule } from '../messaging/messaging.module';
 import { PublishMessageWhatsApp } from 'src/application/use-cases/messaging/publish-message.whatsapp';
 import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
+import { ConsumeMessageWhatsApp } from 'src/application/use-cases/messaging/consume-message.whatsapp';
+import { HttpModule as AxionsModule } from '@nestjs/axios';
+import { EnvConfig } from '../config/configuration';
+import { ApiServiceModule } from 'src/external/ZAPI/zapi.module';
 
 @Module({
   imports: [
-    DatabaseModule,
-    MessagingModule,
+    forwardRef(() => MessagingModule),
     RabbitMQModule.forRoot(RabbitMQModule, {
       exchanges: [
         {
-          name: 'qyon.crm.notification',
+          name: EnvConfig.EXCHANGE,
           type: 'topic',
         },
       ],
-      uri: 'amqp://local:local@localhost:5672',
+      uri: `amqp://${EnvConfig.RABBITMQ_USER}:${EnvConfig.RABBITMQ_PASS}@${EnvConfig.RABBITMQ_URL}`,
     }),
+    DatabaseModule,
+    AxionsModule,
+    ApiServiceModule,
   ],
   controllers: [ProductController, MessageController],
-  providers: [GetProductByKey, PublishMessageWhatsApp],
+  providers: [GetProductByKey, PublishMessageWhatsApp, ConsumeMessageWhatsApp],
+  exports: [GetProductByKey, PublishMessageWhatsApp, ConsumeMessageWhatsApp],
 })
 export class HttpModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
