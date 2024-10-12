@@ -27,7 +27,7 @@ export class MessageController {
       message: body.content.message,
       file: body.content.file,
       priority: body.priority,
-      type: body.provider,
+      provider: body.provider,
     };
 
     await this.messagePublisher.execute(message);

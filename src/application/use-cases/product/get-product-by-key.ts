@@ -1,4 +1,4 @@
-import { ProductGateway } from '../../repositories/product-gateway';
+import { ProductGateway } from '../../gateways/db/product-gateway';
 import { ProductEntity } from '../../entities/product.entity';
 import { Injectable } from '@nestjs/common';
 import { EStatus } from 'src/application/common/enums/status';

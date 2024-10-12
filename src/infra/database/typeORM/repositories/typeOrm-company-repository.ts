@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EStatus } from 'src/application/common/enums/status';
 import { CompanyEntity } from 'src/application/entities/company.entity';
-import { CompanyGateway } from 'src/application/repositories/company-gateway';
+import { CompanyGateway } from 'src/application/gateways/db/company-gateway';
 import { Repository } from 'typeorm';
 import { Company } from '../entities/company';
 import { CompanyMapper } from '../mappers/company.mapper';

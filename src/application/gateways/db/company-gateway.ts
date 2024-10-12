@@ -1,4 +1,4 @@
-import { CompanyEntity } from '../entities/company.entity';
+import { CompanyEntity } from '../../entities/company.entity';
 
 export abstract class CompanyGateway {
   abstract getCompany(params: {

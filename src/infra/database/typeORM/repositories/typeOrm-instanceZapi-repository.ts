@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { InstanceZapiEntity } from 'src/application/entities/instanceZapi.entity';
-import { InstanceZapiGateway } from 'src/application/repositories/instanceZapi-gateway';
+import { InstanceZapiGateway } from 'src/application/gateways/db/instanceZapi-gateway';
 import { InstanceZAPI } from '../entities/instanceZAPI';
 import { Repository } from 'typeorm';
 import { EStatus } from 'src/application/common/enums/status';

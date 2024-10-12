@@ -3,29 +3,26 @@ import { lastValueFrom } from 'rxjs';
 import { HttpService } from '@nestjs/axios';
 import { EnvConfig } from 'src/infra/config/configuration';
 import { AxiosResponse } from 'axios';
-import { MessageDTO } from 'src/infra/messaging/dtos/messageDTO';
+import { SendMessageDTO } from 'src/application/dtos/sendMessageDto';
+import { WhatsAppGateway } from 'src/application/gateways/externals/whatsApp-gateway';
 
 @Injectable()
-export class ZApiService {
+export class ZApiService implements WhatsAppGateway {
   private readonly logger = new Logger(ZApiService.name);
 
   constructor(private readonly httpService: HttpService) {}
-
-  async sendMessage(instanceZapi: any, payload: MessageDTO): Promise<any> {}
-
-  async sendTextMessage(
-    instanceZapi: any,
-    payload: { to: string; message: string },
-  ): Promise<any> {
-    const url = `${EnvConfig.ZAPI_URL}/instances/${instanceZapi.getCode()}/token/${instanceZapi.getToken()}/send-text`;
+  async sendTextMessage(params: SendMessageDTO): Promise<void> {
+    const url = `${EnvConfig.ZAPI_URL}/instances/${params.accountData.instance}/token/${
+      params.accountData.token
+    }/send-text`;
 
     try {
       const response: AxiosResponse = await lastValueFrom(
         this.httpService.post(
           url,
           {
-            phone: payload.to,
-            message: payload.message,
+            phone: params.message.to,
+            message: params.message.message,
           },
           {
             headers: {
@@ -42,5 +39,11 @@ export class ZApiService {
       this.logger.error(`Error sending message: ${error.message}`);
       throw new Error(`Failed to send message: ${error.message}`);
     }
+  }
+  sendImage(params: SendMessageDTO): Promise<void> {
+    throw new Error(`${params} | Method not implemented.`);
+  }
+  sendDocument(params: SendMessageDTO): Promise<void> {
+    throw new Error(`${params} | Method not implemented.`);
   }
 }

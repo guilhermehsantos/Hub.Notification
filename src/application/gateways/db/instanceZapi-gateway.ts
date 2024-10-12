@@ -1,4 +1,4 @@
-import { InstanceZapiEntity } from '../entities/instanceZapi.entity';
+import { InstanceZapiEntity } from '../../entities/instanceZapi.entity';
 
 export abstract class InstanceZapiGateway {
   abstract getZapiInstanceByCompanyId(params: {

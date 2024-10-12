@@ -1,4 +1,4 @@
-import { MessageTemplateEntity } from '../entities/messageTemplate.entity';
+import { MessageTemplateEntity } from '../../entities/messageTemplate.entity';
 
 export abstract class MessageTemplateGateway {
   abstract getTemplate(

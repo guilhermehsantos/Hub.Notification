@@ -12,5 +12,5 @@ export class MessageDTO {
   public message: string;
   public file: string;
   public priority: EPriority;
-  public type: EProvider;
+  public provider: EProvider;
 }

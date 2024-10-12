@@ -1,4 +1,4 @@
-import { ProductGateway } from 'src/application/repositories/product-gateway';
+import { ProductGateway } from 'src/application/gateways/db/product-gateway';
 import { Product } from '../entities/product';
 import { ProductEntity } from 'src/application/entities/product.entity';
 import { Repository } from 'typeorm';

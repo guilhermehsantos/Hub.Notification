@@ -14,7 +14,7 @@ import { HttpModule } from '../http/http.module';
           type: 'topic',
         },
       ],
-      uri: 'amqp://local:local@localhost:5672',
+      uri: `amqp://${EnvConfig.RABBITMQ_USER}:${EnvConfig.RABBITMQ_PASS}@localhost:5672`,
       queues: [
         {
           name: EnvConfig.WHATSAPP_QUEUE_HIGH_PRIORITY,

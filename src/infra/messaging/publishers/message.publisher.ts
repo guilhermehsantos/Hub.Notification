@@ -21,7 +21,7 @@ export class MessagePublisher {
   }
 
   public async publishToHighPriorityQueue(eventData: MessageDTO) {
-    const queue = ProviderQueue[eventData.type].highPriority;
+    const queue = ProviderQueue[eventData.provider].highPriority;
     try {
       this.logger.log(`[${eventData.id}] Publish event to ${queue}`);
 
@@ -35,11 +35,11 @@ export class MessagePublisher {
   }
 
   public async publishToLowPriorityhQueue(eventData: MessageDTO) {
-    const queue = ProviderQueue[eventData.type].lowPriority;
+    const queue = ProviderQueue[eventData.provider].lowPriority;
 
     try {
       this.logger.log(
-        `[${eventData.id}] Publish event to ${eventData.type} in queue ${queue}`,
+        `[${eventData.id}] Publish event to ${eventData.provider} in queue ${queue}`,
       );
       this.amqpConnection.publish(this.exchange, queue, eventData);
     } catch (error) {

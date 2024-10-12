@@ -24,7 +24,7 @@ export class MessageConsumer {
   public async onQueueConsumptionHighPriority(msg: MessageDTO): Promise<void> {
     try {
       this.logger.log(
-        `[${msg.id}] Consume message from ${msg.type} | Send to use case`,
+        `[${msg.id}] Consume message from ${msg.provider} | Send to use case`,
       );
       this.messageConsumerWhatsApp.execute(msg);
     } catch (error) {
@@ -46,7 +46,7 @@ export class MessageConsumer {
   public async onQueueConsumptionLowPriority(msg: MessageDTO): Promise<void> {
     try {
       this.logger.log(
-        `[${msg.id}] Consume message from ${msg.type} | Send to use case`,
+        `[${msg.id}] Consume message from ${msg.provider} | Send to use case`,
       );
       this.messageConsumerWhatsApp.execute(msg);
     } catch (error) {

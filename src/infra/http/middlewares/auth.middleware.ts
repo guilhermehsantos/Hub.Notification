@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
 import { EStatus } from 'src/application/common/enums/status';
-import { ProductGateway } from 'src/application/repositories/product-gateway';
+import { ProductGateway } from 'src/application/gateways/db/product-gateway';
 
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
