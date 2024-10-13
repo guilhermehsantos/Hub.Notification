@@ -13,10 +13,10 @@ import { channel } from 'diagnostics_channel';
       exchanges: [
         {
           name: EnvConfig.EXCHANGE,
-          type: 'topic',
+          type: 'direct',
         },
       ],
-      uri: `amqp://${EnvConfig.RABBITMQ_USER}:${EnvConfig.RABBITMQ_PASS}@localhost:5672`,
+      uri: EnvConfig.RABBITMQ_URL_CONNECT,
       channels: {
         lowPriorityChannel: {
           prefetchCount: 2,
@@ -28,40 +28,48 @@ import { channel } from 'diagnostics_channel';
       queues: [
         {
           name: EnvConfig.WHATSAPP_QUEUE_HIGH_PRIORITY,
+          routingKey: EnvConfig.WHATSAPP_QUEUE_HIGH_PRIORITY,
+          exchange: EnvConfig.EXCHANGE,
           options: {
             arguments: {
               'x-dead-letter-routing-key': `${EnvConfig.WHATSAPP_QUEUE_HIGH_PRIORITY}.dlq`,
               'x-dead-letter-exchange': EnvConfig.EXCHANGE,
             },
             channel: 'highPriorityChannel',
+            durable: true,
+            assert: true,
           },
         },
         {
+          exchange: EnvConfig.EXCHANGE,
           name: EnvConfig.WHATSAPP_QUEUE_LOW_PRIORITY,
+          routingKey: EnvConfig.WHATSAPP_QUEUE_LOW_PRIORITY,
           options: {
             arguments: {
               'x-dead-letter-routing-key': `${EnvConfig.WHATSAPP_QUEUE_LOW_PRIORITY}.dlq`,
               'x-dead-letter-exchange': EnvConfig.EXCHANGE,
             },
             channel: 'lowPriorityChannel',
+            assert: true,
+            durable: true,
           },
         },
         {
+          exchange: EnvConfig.EXCHANGE,
           name: `${EnvConfig.WHATSAPP_QUEUE_LOW_PRIORITY}.dlq`,
+          routingKey: `${EnvConfig.WHATSAPP_QUEUE_LOW_PRIORITY}.dlq`,
           options: {
-            arguments: {
-              'x-dead-letter-routing-key': `${EnvConfig.WHATSAPP_QUEUE_LOW_PRIORITY}.dlq`,
-              'x-dead-letter-exchange': EnvConfig.EXCHANGE,
-            },
+            assert: true,
+            durable: true,
           },
         },
         {
+          exchange: EnvConfig.EXCHANGE,
           name: `${EnvConfig.WHATSAPP_QUEUE_HIGH_PRIORITY}.dlq`,
+          routingKey: `${EnvConfig.WHATSAPP_QUEUE_HIGH_PRIORITY}.dlq`,
           options: {
-            arguments: {
-              'x-dead-letter-routing-key': `${EnvConfig.WHATSAPP_QUEUE_HIGH_PRIORITY}.dlq`,
-              'x-dead-letter-exchange': EnvConfig.EXCHANGE,
-            },
+            assert: true,
+            durable: true,
           },
         },
       ],

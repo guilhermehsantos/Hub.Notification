@@ -19,6 +19,8 @@ export class EnvConfig {
     .required()
     .asString();
 
+  public static readonly RABBITMQ_URL_CONNECT = `amqp://${EnvConfig.RABBITMQ_USER}:${EnvConfig.RABBITMQ_PASS}@${EnvConfig.RABBITMQ_URL}`;
+
   public static readonly EXCHANGE = get('EXCHANGE').required().asString();
   public static readonly WHATSAPP_QUEUE_HIGH_PRIORITY = get(
     'WHATSAPP_QUEUE_HIGH_PRIORITY',

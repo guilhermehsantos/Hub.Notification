@@ -1,4 +1,5 @@
 export class SendMessageDTO {
+  public id: string;
   public message: {
     to: string;
     message: string;

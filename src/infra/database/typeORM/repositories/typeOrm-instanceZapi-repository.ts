@@ -32,8 +32,8 @@ export class TypeOrmInstanceZapiRepository implements InstanceZapiGateway {
         'phone_number',
         'phoneNumber',
         'phoneNumber.id = instanceZapi.phoneNumberId',
-      ) // Join com a tabela phone_number
-      .innerJoin('company', 'company', 'company.id = phoneNumber.companyId') // Join com a tabela company
+      )
+      .innerJoin('company', 'company', 'company.id = phoneNumber.companyId')
       .where(
         'company.id = :id and company.status = :companyStatus and phoneNumber.deleted = :phoneNumberStatus and instanceZapi.status = :instanceStatus',
         {

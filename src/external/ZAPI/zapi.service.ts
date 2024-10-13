@@ -24,29 +24,37 @@ export class ZApiService implements WhatsAppGateway {
 
   constructor(private readonly httpService: HttpService) {}
 
-  async sendMessage(payload: SendMessageDTO): Promise<void> {
+  async sendMessage(payload: SendMessageDTO, delay?: number): Promise<void> {
     let url = `${EnvConfig.ZAPI_URL}/instances/${payload.accountData.instance}/token/${
       payload.accountData.token
     }/${ZAPIEndpoints[payload.message.type]}`;
 
     if (payload.message.type === 'text') {
-      return await this.sendTextMessage(payload, url);
+      return await this.sendTextMessage(payload, url, delay);
     }
 
     const mimeType = getMimeType(payload.message.file);
     if (payload.message.type === 'document') url = `${url}/${mimeType}`;
 
-    return await this.sendMidiaMessage(payload, url);
+    return await this.sendMidiaMessage(payload, url, delay);
   }
 
-  async sendTextMessage(params: SendMessageDTO, url: string): Promise<void> {
+  async sendTextMessage(
+    params: SendMessageDTO,
+    url: string,
+    delay?: number,
+  ): Promise<void> {
     try {
+      this.logger.log(
+        `[${params.id}] Sent TEXT message to ${params.message.to} with delay ${delay}`,
+      );
       const response: AxiosResponse = await lastValueFrom(
         this.httpService.post(
           url,
           {
             phone: params.message.to,
             message: params.message.message,
+            delayMessage: delay,
           },
           {
             headers: {
@@ -57,22 +65,35 @@ export class ZApiService implements WhatsAppGateway {
         ),
       );
 
-      this.logger.log(`Message sent successfully: ${response.data}`);
+      this.logger.log(
+        `[${params.id}] Message sent successfully: ${JSON.stringify(response.data)}`,
+      );
       return response.data;
     } catch (error) {
-      this.logger.error(`Error sending message: ${error.message}`);
+      this.logger.error(
+        `[${params.id}] Error sending message: ${error.message}`,
+      );
       throw new Error(`Failed to send message: ${error.message}`);
     }
   }
 
-  async sendMidiaMessage(params: SendMessageDTO, url: string): Promise<void> {
+  async sendMidiaMessage(
+    params: SendMessageDTO,
+    url: string,
+    delay?: number,
+  ): Promise<void> {
     try {
+      this.logger.log(
+        `[${params.id}] Sent ${params.message.type} message to ${params.message.to} with delay ${delay}`,
+      );
       const response: AxiosResponse = await lastValueFrom(
         this.httpService.post(
           url,
           {
             phone: params.message.to,
             [params.message.type]: params.message.file,
+            delayMessage: delay,
+            caption: params.message.message,
           },
           {
             headers: {
@@ -83,10 +104,14 @@ export class ZApiService implements WhatsAppGateway {
         ),
       );
 
-      this.logger.log(`Message sent successfully: ${response.data}`);
+      this.logger.log(
+        `[${params.id}] Message sent successfully: ${JSON.stringify(response.data)}`,
+      );
       return response.data;
     } catch (error) {
-      this.logger.error(`Error sending message: ${error.message}`);
+      this.logger.error(
+        `[${params.id}]  Error sending message: ${error.message}`,
+      );
       throw new Error(`Failed to send message: ${error.message}`);
     }
   }

@@ -1,4 +1,9 @@
-import { AmqpConnection, RabbitSubscribe, RabbitRPC } from '@golevelup/nestjs-rabbitmq';
+import {
+  AmqpConnection,
+  RabbitSubscribe,
+  Nack,
+} from '@golevelup/nestjs-rabbitmq';
+import { Message, Channel } from 'amqplib';
 import { Injectable, Logger } from '@nestjs/common';
 import { EnvConfig } from 'src/infra/config/configuration';
 import { MessageDTO } from '../dtos/messageDTO';
@@ -14,24 +19,27 @@ export class MessageConsumer {
 
   @RabbitSubscribe({
     exchange: EnvConfig.EXCHANGE,
-    routingKey: EnvConfig.WHATSAPP_QUEUE_HIGH_PRIORITY,
     queue: EnvConfig.WHATSAPP_QUEUE_HIGH_PRIORITY,
+    routingKey: EnvConfig.WHATSAPP_QUEUE_HIGH_PRIORITY,
     queueOptions: {
       channel: 'highPriorityChannel',
       deadLetterExchange: EnvConfig.EXCHANGE,
       deadLetterRoutingKey: `${EnvConfig.WHATSAPP_QUEUE_HIGH_PRIORITY}.dlq`,
     },
   })
-  public async onQueueConsumptionHighPriority(msg: MessageDTO): Promise<void> {
+  public async onQueueConsumptionHighPriority(msg: MessageDTO) {
     try {
       this.logger.log(
-        `[${msg.id}] Consume message from ${msg.provider} | Send to use case`,
+        `[${msg.id}][HighPriorityQueue] Consume message from ${msg.provider} | Send to use case`,
       );
-      this.messageConsumerWhatsApp.execute(msg);
+
+      await this.messageConsumerWhatsApp.execute(msg);
+      return;
     } catch (error) {
       this.logger.error(
-        `[${msg.id}] Error consuming message | ${error.message}`,
+        `[${msg.id}]HighPriorityQueue] Error consuming message | ${error.message}`,
       );
+      return new Nack(false);
     }
   }
 
@@ -45,16 +53,25 @@ export class MessageConsumer {
       deadLetterRoutingKey: `${EnvConfig.WHATSAPP_QUEUE_LOW_PRIORITY}.dlq`,
     },
   })
-  public async onQueueConsumptionLowPriority(msg: MessageDTO): Promise<void> {
+  public async onQueueConsumptionLowPriority(msg: MessageDTO) {
+    const delay = getRandomSeconds(7, 15);
     try {
       this.logger.log(
-        `[${msg.id}] Consume message from ${msg.provider} | Send to use case`,
+        `[${msg.id}]LowPriorityQueue] Consume message from ${msg.provider} with delahy ${delay}| Send to use case`,
       );
-      this.messageConsumerWhatsApp.execute(msg);
+
+      await this.messageConsumerWhatsApp.execute(msg, delay);
+      return;
     } catch (error) {
       this.logger.error(
-        `[${msg.id}] Error consuming message | ${error.message}`,
+        `[${msg.id}]LowPriorityQueue] Error consuming message | ${error.message}`,
       );
+      return new Nack(false);
     }
   }
+}
+
+function getRandomSeconds(min, max) {
+  const randomSeconds = Math.floor(Math.random() * (max - min + 1)) + min;
+  return randomSeconds;
 }
