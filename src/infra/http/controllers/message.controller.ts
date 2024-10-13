@@ -25,6 +25,7 @@ export class MessageController {
       template: body.content.template,
       to: body.content.to,
       message: body.content.message,
+      type: body.content.type,
       file: body.content.file,
       priority: body.priority,
       provider: body.provider,

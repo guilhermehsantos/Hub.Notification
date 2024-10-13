@@ -8,9 +8,9 @@ export class PostNewMessageDto {
   product: string;
   userEmail: string;
   priority: EPriority;
-  type: string;
   provider: EProvider;
   content: {
+    type: string;
     template: string;
     to: string;
     file: string;

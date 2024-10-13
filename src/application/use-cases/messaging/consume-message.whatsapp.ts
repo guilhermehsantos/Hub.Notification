@@ -28,12 +28,7 @@ export class ConsumeMessageWhatsApp {
     if (!instanceZapi) throw new Error('Instance Zapi not found');
 
     try {
-      // const response = await this.zApiService.sendTextMessage(instanceZapi, {
-      //   message: payload.message,
-      //   to: payload.to,
-      // });
-
-      const response = await this.whatsAppGateway.sendTextMessage({
+      const response = await this.whatsAppGateway.sendMessage({
         accountData: {
           cnpj: company.getCnpj(),
           instance: instanceZapi.getCode(),
@@ -42,19 +37,16 @@ export class ConsumeMessageWhatsApp {
         message: {
           to: payload.to,
           message: payload.message,
+          type: payload.type,
+          file: payload.file,
         },
       });
 
-      this.logger.log(response);
+      // this.logger.log(response.);
     } catch (error) {
       console.error('Erro ao fazer a requisição: ', error.message);
     }
 
-    this.logger.log(
-      'Consume message from WhatsApp',
-      payload,
-      company,
-      instanceZapi,
-    );
+    this.logger.log('Consume message from WhatsApp', company, instanceZapi);
   }
 }

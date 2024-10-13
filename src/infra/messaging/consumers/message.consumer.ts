@@ -1,4 +1,4 @@
-import { AmqpConnection, RabbitSubscribe } from '@golevelup/nestjs-rabbitmq';
+import { AmqpConnection, RabbitSubscribe, RabbitRPC } from '@golevelup/nestjs-rabbitmq';
 import { Injectable, Logger } from '@nestjs/common';
 import { EnvConfig } from 'src/infra/config/configuration';
 import { MessageDTO } from '../dtos/messageDTO';
@@ -17,6 +17,7 @@ export class MessageConsumer {
     routingKey: EnvConfig.WHATSAPP_QUEUE_HIGH_PRIORITY,
     queue: EnvConfig.WHATSAPP_QUEUE_HIGH_PRIORITY,
     queueOptions: {
+      channel: 'highPriorityChannel',
       deadLetterExchange: EnvConfig.EXCHANGE,
       deadLetterRoutingKey: `${EnvConfig.WHATSAPP_QUEUE_HIGH_PRIORITY}.dlq`,
     },
@@ -39,6 +40,7 @@ export class MessageConsumer {
     routingKey: EnvConfig.WHATSAPP_QUEUE_LOW_PRIORITY,
     queue: EnvConfig.WHATSAPP_QUEUE_LOW_PRIORITY,
     queueOptions: {
+      channel: 'lowPriorityChannel',
       deadLetterExchange: EnvConfig.EXCHANGE,
       deadLetterRoutingKey: `${EnvConfig.WHATSAPP_QUEUE_LOW_PRIORITY}.dlq`,
     },

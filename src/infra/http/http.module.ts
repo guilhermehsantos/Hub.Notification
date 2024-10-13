@@ -20,15 +20,6 @@ import { ApiServiceModule } from 'src/external/ZAPI/zapi.module';
 @Module({
   imports: [
     forwardRef(() => MessagingModule),
-    RabbitMQModule.forRoot(RabbitMQModule, {
-      exchanges: [
-        {
-          name: EnvConfig.EXCHANGE,
-          type: 'topic',
-        },
-      ],
-      uri: `amqp://${EnvConfig.RABBITMQ_USER}:${EnvConfig.RABBITMQ_PASS}@${EnvConfig.RABBITMQ_URL}`,
-    }),
     DatabaseModule,
     AxionsModule,
     ApiServiceModule,

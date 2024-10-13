@@ -4,6 +4,8 @@ import { MessagePublisher } from './publishers/message.publisher';
 import { MessageConsumer } from './consumers/message.consumer';
 import { EnvConfig } from '../config/configuration';
 import { HttpModule } from '../http/http.module';
+import { channel } from 'diagnostics_channel';
+
 @Module({
   imports: [
     forwardRef(() => HttpModule),
@@ -15,6 +17,14 @@ import { HttpModule } from '../http/http.module';
         },
       ],
       uri: `amqp://${EnvConfig.RABBITMQ_USER}:${EnvConfig.RABBITMQ_PASS}@localhost:5672`,
+      channels: {
+        lowPriorityChannel: {
+          prefetchCount: 2,
+        },
+        highPriorityChannel: {
+          prefetchCount: 20,
+        },
+      },
       queues: [
         {
           name: EnvConfig.WHATSAPP_QUEUE_HIGH_PRIORITY,
@@ -23,6 +33,7 @@ import { HttpModule } from '../http/http.module';
               'x-dead-letter-routing-key': `${EnvConfig.WHATSAPP_QUEUE_HIGH_PRIORITY}.dlq`,
               'x-dead-letter-exchange': EnvConfig.EXCHANGE,
             },
+            channel: 'highPriorityChannel',
           },
         },
         {
@@ -32,6 +43,7 @@ import { HttpModule } from '../http/http.module';
               'x-dead-letter-routing-key': `${EnvConfig.WHATSAPP_QUEUE_LOW_PRIORITY}.dlq`,
               'x-dead-letter-exchange': EnvConfig.EXCHANGE,
             },
+            channel: 'lowPriorityChannel',
           },
         },
         {

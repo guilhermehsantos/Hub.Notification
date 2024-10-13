@@ -10,6 +10,7 @@ export class MessageDTO {
   public template: string;
   public to: string;
   public message: string;
+  public type: string;
   public file: string;
   public priority: EPriority;
   public provider: EProvider;

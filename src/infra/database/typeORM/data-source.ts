@@ -25,7 +25,7 @@ export const AppDataSource = new DataSource({
   ],
   migrations: ['src/infra/database/typeORM/migrations/*.js'],
   synchronize: false,
-  logging: true,
+  logging: false,
   extra: {
     ssl: {
       rejectUnauthorized: false,

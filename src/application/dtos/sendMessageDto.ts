@@ -2,9 +2,8 @@ export class SendMessageDTO {
   public message: {
     to: string;
     message: string;
-    image?: string;
-    document?: string;
-    video?: string;
+    type: string; // 'text' | 'image' | 'document' | 'video' | 'audio' | 'location' | 'contact' | 'sticker' | 'gif' | 'reaction';
+    file?: string;
   };
   public accountData: {
     instance: string;
