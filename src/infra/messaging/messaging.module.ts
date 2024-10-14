@@ -4,7 +4,6 @@ import { MessagePublisher } from './publishers/message.publisher';
 import { MessageConsumer } from './consumers/message.consumer';
 import { EnvConfig } from '../config/configuration';
 import { HttpModule } from '../http/http.module';
-import { channel } from 'diagnostics_channel';
 
 @Module({
   imports: [

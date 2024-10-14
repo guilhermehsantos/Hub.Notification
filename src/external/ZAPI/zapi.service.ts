@@ -46,7 +46,7 @@ export class ZApiService implements WhatsAppGateway {
   ): Promise<void> {
     try {
       this.logger.log(
-        `[${params.id}] Sent TEXT message to ${params.message.to} with delay ${delay}`,
+        `[${params.id}] Sent TEXT message to ${params.message.to} with delay to next message ${delay || '0'}`,
       );
       const response: AxiosResponse = await lastValueFrom(
         this.httpService.post(
@@ -84,7 +84,7 @@ export class ZApiService implements WhatsAppGateway {
   ): Promise<void> {
     try {
       this.logger.log(
-        `[${params.id}] Sent ${params.message.type} message to ${params.message.to} with delay ${delay}`,
+        `[${params.id}] Sent ${params.message.type} message to ${params.message.to} with delay to next message ${delay || '0'}`,
       );
       const response: AxiosResponse = await lastValueFrom(
         this.httpService.post(

@@ -3,7 +3,6 @@ import {
   RabbitSubscribe,
   Nack,
 } from '@golevelup/nestjs-rabbitmq';
-import { Message, Channel } from 'amqplib';
 import { Injectable, Logger } from '@nestjs/common';
 import { EnvConfig } from 'src/infra/config/configuration';
 import { MessageDTO } from '../dtos/messageDTO';
