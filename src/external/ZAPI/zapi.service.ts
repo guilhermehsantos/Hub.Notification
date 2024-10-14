@@ -24,7 +24,7 @@ export class ZApiService implements WhatsAppGateway {
 
   constructor(private readonly httpService: HttpService) {}
 
-  async sendMessage(payload: SendMessageDTO, delay?: number): Promise<void> {
+  async sendMessage(payload: SendMessageDTO, delay?: number) {
     let url = `${EnvConfig.ZAPI_URL}/instances/${payload.accountData.instance}/token/${
       payload.accountData.token
     }/${ZAPIEndpoints[payload.message.type]}`;
@@ -39,11 +39,7 @@ export class ZApiService implements WhatsAppGateway {
     return await this.sendMidiaMessage(payload, url, delay);
   }
 
-  async sendTextMessage(
-    params: SendMessageDTO,
-    url: string,
-    delay?: number,
-  ): Promise<void> {
+  async sendTextMessage(params: SendMessageDTO, url: string, delay?: number) {
     try {
       this.logger.log(
         `[${params.id}] Sent TEXT message to ${params.message.to} with delay to next message ${delay || '0'}`,
@@ -77,11 +73,7 @@ export class ZApiService implements WhatsAppGateway {
     }
   }
 
-  async sendMidiaMessage(
-    params: SendMessageDTO,
-    url: string,
-    delay?: number,
-  ): Promise<void> {
+  async sendMidiaMessage(params: SendMessageDTO, url: string, delay?: number) {
     try {
       this.logger.log(
         `[${params.id}] Sent ${params.message.type} message to ${params.message.to} with delay to next message ${delay || '0'}`,
@@ -123,38 +115,38 @@ function getMimeType(base64String: string): string | null {
   return match ? match[1].split('/')[1] : null;
 }
 
-function mapMimeTypeToEndpointKey(mimeType: string): string | null {
-  const mimeMap: Record<string, keyof typeof ZAPIEndpoints> = {
-    'image/png': 'image',
-    'image/jpeg': 'image',
-    'image/gif': 'gif',
-    'application/pdf': 'document',
-    'video/mp4': 'video',
-    'audio/mpeg': 'audio',
-    'audio/ogg': 'audio',
-    'text/plain': 'text',
-    'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
-      'document',
-    'application/msword': 'document',
-    'application/vnd.ms-excel': 'document',
-    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
-      'document',
-    'application/zip': 'document',
-  };
+// function mapMimeTypeToEndpointKey(mimeType: string): string | null {
+//   const mimeMap: Record<string, keyof typeof ZAPIEndpoints> = {
+//     'image/png': 'image',
+//     'image/jpeg': 'image',
+//     'image/gif': 'gif',
+//     'application/pdf': 'document',
+//     'video/mp4': 'video',
+//     'audio/mpeg': 'audio',
+//     'audio/ogg': 'audio',
+//     'text/plain': 'text',
+//     'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
+//       'document',
+//     'application/msword': 'document',
+//     'application/vnd.ms-excel': 'document',
+//     'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
+//       'document',
+//     'application/zip': 'document',
+//   };
 
-  return mimeMap[mimeType] || null;
-}
+//   return mimeMap[mimeType] || null;
+// }
 
-function mapBase64ToZAPIEndpointKey(
-  base64String: string,
-): { type: string; extension: string } | null {
-  const mimeType = getMimeType(base64String);
-  if (!mimeType) {
-    console.error('MimeType not found.');
-    return null;
-  }
-  return {
-    type: mapMimeTypeToEndpointKey(mimeType),
-    extension: mimeType.split('/')[1],
-  };
-}
+// function mapBase64ToZAPIEndpointKey(
+//   base64String: string,
+// ): { type: string; extension: string } | null {
+//   const mimeType = getMimeType(base64String);
+//   if (!mimeType) {
+//     console.error('MimeType not found.');
+//     return null;
+//   }
+//   return {
+//     type: mapMimeTypeToEndpointKey(mimeType),
+//     extension: mimeType.split('/')[1],
+//   };
+// }
