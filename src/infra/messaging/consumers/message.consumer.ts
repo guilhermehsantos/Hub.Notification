@@ -36,7 +36,7 @@ export class MessageConsumer {
       return;
     } catch (error) {
       this.logger.error(
-        `[${msg.id}]HighPriorityQueue] Error consuming message | ${error.message}`,
+        `[${msg.id}]HighPriorityQueue] Error consuming message | sended to dlq | ${error.message}`,
       );
       return new Nack(false);
     }
@@ -63,7 +63,7 @@ export class MessageConsumer {
       return;
     } catch (error) {
       this.logger.error(
-        `[${msg.id}]LowPriorityQueue] Error consuming message | ${error.message}`,
+        `[${msg.id}]LowPriorityQueue] Error consuming message | sended to dlq | ${error.message}`,
       );
       return new Nack(false);
     }

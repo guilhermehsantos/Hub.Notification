@@ -46,11 +46,8 @@ export class ConsumeMessageWhatsApp {
         delay,
       );
     } catch (error) {
-      this.logger.error(
-        `[${payload.id}]  Error on consume message`,
-        error.message,
-      );
-      throw new Error(`[${payload.id}]  Error on consume message`);
+      this.logger.error(`[${payload.id}]  Error on consume message`);
+      throw new Error(`[${payload.id}]  ${error.message}`);
     }
   }
 }
