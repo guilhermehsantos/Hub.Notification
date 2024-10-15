@@ -1,6 +1,6 @@
 import { AmqpConnection } from '@golevelup/nestjs-rabbitmq';
 import { Injectable, Logger } from '@nestjs/common';
-import { EnvConfig } from 'src/infra/config/configuration';
+import { EnvConfig } from '../../config/configuration';
 import { MessageDTO } from '../dtos/messageDTO';
 
 export const ProviderQueue = {

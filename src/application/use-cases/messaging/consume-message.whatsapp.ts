@@ -1,8 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { CompanyGateway } from 'src/application/gateways/db/company-gateway';
-import { InstanceZapiGateway } from 'src/application/gateways/db/instanceZapi-gateway';
-import { MessageDTO } from 'src/infra/messaging/dtos/messageDTO';
-import { WhatsAppGateway } from 'src/application/gateways/externals/whatsApp-gateway';
+import { CompanyGateway } from '../../gateways/db/company-gateway';
+import { InstanceZapiGateway } from '../../gateways/db/instanceZapi-gateway';
+import { MessageDTO } from '../../../infra/messaging/dtos/messageDTO';
+import { WhatsAppGateway } from '../../gateways/externals/whatsApp-gateway';
 
 @Injectable()
 export class ConsumeMessageWhatsApp {
@@ -45,6 +45,10 @@ export class ConsumeMessageWhatsApp {
         },
         delay,
       );
+
+      const { data, status } = response;
+      if (!data?.messageId)
+        throw new Error(`[${payload.id}] Error on send message`);
     } catch (error) {
       this.logger.error(`[${payload.id}]  Error on consume message`);
       throw new Error(`[${payload.id}]  ${error.message}`);

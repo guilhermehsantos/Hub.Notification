@@ -1,4 +1,4 @@
-import { ProductEntity } from 'src/application/entities/product.entity';
+import { ProductEntity } from '../../entities/product.entity';
 
 export abstract class ProductGateway {
   abstract findByParams(

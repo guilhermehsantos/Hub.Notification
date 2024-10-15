@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { EPriority } from 'src/application/common/enums/priority';
-import { MessagePublisher } from 'src/infra/messaging/publishers/message.publisher';
-import { MessageDTO } from 'src/infra/messaging/dtos/messageDTO';
+import { EPriority } from '../../common/enums/priority';
+import { MessagePublisher } from '../../../infra/messaging/publishers/message.publisher';
+import { MessageDTO } from '../../../infra/messaging/dtos/messageDTO';
 
 @Injectable()
 export class PublishMessageWhatsApp {
@@ -10,8 +10,10 @@ export class PublishMessageWhatsApp {
 
   async execute(payload: MessageDTO): Promise<void> {
     const { priority } = payload;
+    const priorityLabel = EPriority[priority];
+
     this.logger.log(
-      `[${payload.id}] message distribuited by priority ${priority}`,
+      `[${payload.id}] message distribuited by priority ${priorityLabel}`,
     );
 
     if (priority === EPriority.HIGH)

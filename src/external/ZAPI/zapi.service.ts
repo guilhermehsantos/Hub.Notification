@@ -39,7 +39,11 @@ export class ZApiService implements WhatsAppGateway {
     return await this.sendMidiaMessage(payload, url, delay);
   }
 
-  async sendTextMessage(params: SendMessageDTO, url: string, delay?: number) {
+  async sendTextMessage(
+    params: SendMessageDTO,
+    url: string,
+    delay?: number,
+  ): Promise<{ data: any; status: number }> {
     try {
       this.logger.log(
         `[${params.id}] Sent TEXT message to ${params.message.to} with delay to next message ${delay || '0'}`,
@@ -64,7 +68,7 @@ export class ZApiService implements WhatsAppGateway {
       this.logger.log(
         `[${params.id}] Message sent successfully: ${JSON.stringify(response.data)}`,
       );
-      return response.data;
+      return { data: response.data, status: response.status };
     } catch (error) {
       this.logger.error(
         `[${params.id}] Error sending message: ${error.message}`,
@@ -73,7 +77,11 @@ export class ZApiService implements WhatsAppGateway {
     }
   }
 
-  async sendMidiaMessage(params: SendMessageDTO, url: string, delay?: number) {
+  async sendMidiaMessage(
+    params: SendMessageDTO,
+    url: string,
+    delay?: number,
+  ): Promise<{ data: any; status: number }> {
     try {
       this.logger.log(
         `[${params.id}] Sent ${params.message.type} message to ${params.message.to} with delay to next message ${delay || '0'}`,
@@ -99,7 +107,7 @@ export class ZApiService implements WhatsAppGateway {
       this.logger.log(
         `[${params.id}] Message sent successfully: ${JSON.stringify(response.data)}`,
       );
-      return response.data;
+      return { data: response.data, status: response.status };
     } catch (error) {
       this.logger.error(
         `[${params.id}]  Error sending message: ${error.message}`,

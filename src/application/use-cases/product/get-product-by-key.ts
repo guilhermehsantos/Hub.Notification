@@ -1,7 +1,7 @@
 import { ProductGateway } from '../../gateways/db/product-gateway';
 import { ProductEntity } from '../../entities/product.entity';
 import { Injectable } from '@nestjs/common';
-import { EStatus } from 'src/application/common/enums/status';
+import { EStatus } from '../../common/enums/status';
 
 @Injectable()
 export class GetProductByKey {
