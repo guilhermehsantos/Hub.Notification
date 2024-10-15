@@ -27,6 +27,7 @@ export class TypeOrmInstanceZapiRepository implements InstanceZapiGateway {
         'instanceZapi.status',
         'instanceZapi.createdBy',
         'instanceZapi.createdAt',
+        'instanceZapi.clientToken',
       ])
       .innerJoin(
         'phone_number',

@@ -7,7 +7,7 @@ describe('CompanyEntity', () => {
   const id = randomUUID();
   const props = {
     name: 'Test Company',
-    cnpj: '12345678000195',
+    companyRegistrationNumber: '12345678000195',
     createdAt: new Date('2023-01-01'),
     status: EStatus.ACTIVE,
     deleted: false,
@@ -21,7 +21,9 @@ describe('CompanyEntity', () => {
   it('should create a CompanyEntity with the given id and props', () => {
     expect(companyEntity.getId()).toBe(id);
     expect(companyEntity.getName()).toBe(props.name);
-    expect(companyEntity.getCnpj()).toBe(props.cnpj);
+    expect(companyEntity.getCompanyRegistrationNumber()).toBe(
+      props.companyRegistrationNumber,
+    );
     expect(companyEntity.getCreatedAt()).toEqual(props.createdAt);
     expect(companyEntity.getStatus()).toBe(props.status);
     expect(companyEntity.getDeleted()).toBe(props.deleted);
@@ -42,8 +44,8 @@ describe('CompanyEntity', () => {
 
   it('should set and get the CNPJ correctly', () => {
     const newCnpj = '98765432000195';
-    companyEntity.setCnpj(newCnpj);
-    expect(companyEntity.getCnpj()).toBe(newCnpj);
+    companyEntity.setCompanyRegistrationNumber(newCnpj);
+    expect(companyEntity.getCompanyRegistrationNumber()).toBe(newCnpj);
   });
 
   it('should set and get the createdAt date correctly', () => {

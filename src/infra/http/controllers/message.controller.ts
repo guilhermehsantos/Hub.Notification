@@ -20,13 +20,14 @@ export class MessageController {
       id: requestId.toString(),
       company: {
         id: body.companyId,
-        cnpj: body.cnpj,
+        companyRegistrationNumber: body.companyRegistrationNumber,
       },
       template: body.content.template,
       to: body.content.to,
       message: body.content.message,
       type: body.content.type,
       file: body.content.file,
+      fileName: body.content.fileName,
       priority: body.priority,
       provider: body.provider,
     };

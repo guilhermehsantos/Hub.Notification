@@ -7,6 +7,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { EnvConfig } from 'src/infra/config/configuration';
 import { MessageDTO } from '../dtos/messageDTO';
 import { ConsumeMessageWhatsApp } from 'src/application/use-cases/messaging/consume-message.whatsapp';
+import { getRandomSeconds } from 'src/application/common/utils/RandomRange';
 
 @Injectable()
 export class MessageConsumer {
@@ -32,7 +33,7 @@ export class MessageConsumer {
         `[${msg.id}][HighPriorityQueue] Consume message from ${msg.provider} | Send to use case`,
       );
 
-      await this.messageConsumerWhatsApp.execute(msg);
+      await this.messageConsumerWhatsApp.execute(msg, 0);
       return;
     } catch (error) {
       this.logger.error(
@@ -53,10 +54,10 @@ export class MessageConsumer {
     },
   })
   public async onQueueConsumptionLowPriority(msg: MessageDTO) {
-    const delay = getRandomSeconds(7, 15);
+    const delay = getRandomSeconds(10, 20);
     try {
       this.logger.log(
-        `[${msg.id}]LowPriorityQueue] Consume message from ${msg.provider} with delahy ${delay}| Send to use case`,
+        `[${msg.id}]LowPriorityQueue] Consume message from ${msg.provider} with delay ${delay}| Send to use case`,
       );
 
       await this.messageConsumerWhatsApp.execute(msg, delay);
@@ -68,9 +69,4 @@ export class MessageConsumer {
       return new Nack(false);
     }
   }
-}
-
-function getRandomSeconds(min, max) {
-  const randomSeconds = Math.floor(Math.random() * (max - min + 1)) + min;
-  return randomSeconds;
 }

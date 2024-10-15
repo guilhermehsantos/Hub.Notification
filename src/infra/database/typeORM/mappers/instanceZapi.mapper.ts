@@ -12,6 +12,7 @@ export class InstanceZapiMapper {
       createdAt: instanceZapi.createdAt,
       phoneNumberId: instanceZapi.phoneNumberId,
       type: instanceZapi.type,
+      clientToken: instanceZapi.clientToken,
     });
   }
 
@@ -26,6 +27,7 @@ export class InstanceZapiMapper {
       createdAt: instanceZapi.getCreatedAt(),
       type: instanceZapi.getType(),
       token: instanceZapi.getToken(),
+      clientToken: instanceZapi.getClientToken(),
     };
   }
 }

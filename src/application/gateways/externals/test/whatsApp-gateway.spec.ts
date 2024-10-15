@@ -23,7 +23,7 @@ describe('WhatsAppGateway', () => {
       accountData: {
         instance: 'instance123',
         token: 'token123',
-        cnpj: '1234567890001',
+        companyRegistrationNumber: '1234567890001',
       },
     };
 
@@ -44,7 +44,7 @@ describe('WhatsAppGateway', () => {
       accountData: {
         instance: 'instance123',
         token: 'token123',
-        cnpj: '1234567890001',
+        companyRegistrationNumber: '1234567890001',
       },
     };
     const url = 'https://example.com';
@@ -71,7 +71,7 @@ describe('WhatsAppGateway', () => {
       accountData: {
         instance: 'instance123',
         token: 'token123',
-        cnpj: '1234567890001',
+        companyRegistrationNumber: '1234567890001',
       },
     };
     const url = 'https://example.com';

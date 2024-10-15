@@ -1,0 +1,22 @@
+version: '3.8'
+
+networks:
+  qyon_hub_notification:
+    external:
+      name: nat
+
+services:
+  app:
+    container_name: qyon_hub_notification
+    networks:
+      qyon_hub_notification:
+        aliases:
+          - app
+    isolation: 'process'
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 7895:80
+    env_file:
+      - .env

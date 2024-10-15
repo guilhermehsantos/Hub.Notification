@@ -19,6 +19,9 @@ export class InstanceZAPI {
   @Column({ type: 'varchar', nullable: true })
   code: string;
 
+  @Column({ type: 'varchar', nullable: true })
+  clientToken: string;
+
   @Column({ type: 'int' })
   type: number;
 

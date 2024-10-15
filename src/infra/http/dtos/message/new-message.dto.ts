@@ -2,7 +2,7 @@ import { EPriority } from 'src/application/common/enums/priority';
 import { EProvider } from 'src/application/common/enums/provider';
 
 export class PostNewMessageDto {
-  cnpj: string;
+  companyRegistrationNumber: string;
   companyId: string;
   productKey: string;
   product: string;
@@ -15,5 +15,6 @@ export class PostNewMessageDto {
     to: string;
     file: string;
     message: string;
+    fileName?: string;
   };
 }

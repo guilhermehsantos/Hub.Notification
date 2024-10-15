@@ -6,7 +6,7 @@ export class CompanyMapper {
     return new CompanyEntity(company.id, {
       deleted: company.deleted,
       status: company.status,
-      cnpj: company.cnpj,
+      companyRegistrationNumber: company.companyRegistrationNumber,
       name: company.name,
       createdAt: company.createdAt,
       default: company.default,
@@ -14,7 +14,7 @@ export class CompanyMapper {
   }
   static toPersistence(company: CompanyEntity): Company {
     return {
-      cnpj: company.getCnpj(),
+      companyRegistrationNumber: company.getCompanyRegistrationNumber(),
       id: company.getId(),
       name: company.getName(),
       createdAt: company.getCreatedAt(),

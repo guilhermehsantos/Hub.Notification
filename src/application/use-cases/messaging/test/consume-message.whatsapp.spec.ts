@@ -50,7 +50,10 @@ describe('ConsumeMessageWhatsApp', () => {
   it('should send message successfully', async () => {
     const mockPayload: MessageDTO = {
       id: '123',
-      company: { cnpj: '123456789', id: randomUUID().toString() },
+      company: {
+        companyRegistrationNumber: '123456789',
+        id: randomUUID().toString(),
+      },
       to: 'recipient',
       message: 'Hello',
       type: 'text',
@@ -61,7 +64,7 @@ describe('ConsumeMessageWhatsApp', () => {
     };
     const mockCompany = {
       getId: jest.fn(() => 'company-id'),
-      getCnpj: jest.fn(() => '123456789'),
+      getCompanyRegistrationNumber: jest.fn(() => '123456789'),
     };
     const mockInstanceZapi = {
       getCode: jest.fn(() => 'zapi-code'),
@@ -78,7 +81,7 @@ describe('ConsumeMessageWhatsApp', () => {
     await service.execute(mockPayload);
 
     expect(companyGateway.getCompany).toHaveBeenCalledWith({
-      cnpj: '123456789',
+      companyRegistrationNumber: '123456789',
     });
     expect(instanceZapiGateway.getZapiInstanceByCompanyId).toHaveBeenCalledWith(
       { companyId: 'company-id' },
@@ -87,7 +90,7 @@ describe('ConsumeMessageWhatsApp', () => {
       {
         id: '123',
         accountData: {
-          cnpj: '123456789',
+          companyRegistrationNumber: '123456789',
           instance: 'zapi-code',
           token: 'zapi-token',
         },
@@ -105,7 +108,10 @@ describe('ConsumeMessageWhatsApp', () => {
   it('should throw an error if company not found', async () => {
     const mockPayload: MessageDTO = {
       id: '123',
-      company: { cnpj: '123456789', id: randomUUID().toString() },
+      company: {
+        companyRegistrationNumber: '123456789',
+        id: randomUUID().toString(),
+      },
       to: 'recipient',
       message: 'Hello',
       type: 'text',
@@ -125,7 +131,10 @@ describe('ConsumeMessageWhatsApp', () => {
   it('should throw an error if instance zapi not found', async () => {
     const mockPayload: MessageDTO = {
       id: '123',
-      company: { cnpj: '123456789', id: randomUUID().toString() },
+      company: {
+        companyRegistrationNumber: '123456789',
+        id: randomUUID().toString(),
+      },
       to: 'recipient',
       message: 'Hello',
       type: 'text',
@@ -149,7 +158,10 @@ describe('ConsumeMessageWhatsApp', () => {
   it('should log and throw error if sendMessage fails', async () => {
     const mockPayload: MessageDTO = {
       id: '123',
-      company: { cnpj: '123456789', id: randomUUID().toString() },
+      company: {
+        companyRegistrationNumber: '123456789',
+        id: randomUUID().toString(),
+      },
       to: 'recipient',
       message: 'Hello',
       type: 'text',
@@ -160,7 +172,7 @@ describe('ConsumeMessageWhatsApp', () => {
     };
     const mockCompany = {
       getId: jest.fn(() => 'company-id'),
-      getCnpj: jest.fn(() => '123456789'),
+      companyRegistrationNumber: jest.fn(() => '123456789'),
     };
     const mockInstanceZapi = {
       getCode: jest.fn(() => 'zapi-code'),

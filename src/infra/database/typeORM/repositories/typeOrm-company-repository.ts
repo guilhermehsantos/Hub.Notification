@@ -16,16 +16,19 @@ export class TypeOrmCompanyRepository implements CompanyGateway {
 
   async getCompany(params: {
     id: string;
-    cnpj: string;
+    companyRegistrationNumber: string;
   }): Promise<CompanyEntity | null> {
     let company;
     if (params.id)
       company = await this.companyRepository.findOne({
         where: { id: params.id },
       });
-    else if (params.cnpj)
+    else if (params.companyRegistrationNumber)
       company = await this.companyRepository.findOne({
-        where: { cnpj: params.cnpj, status: EStatus.ACTIVE },
+        where: {
+          companyRegistrationNumber: params.companyRegistrationNumber,
+          status: EStatus.ACTIVE,
+        },
       });
     else
       company = await this.companyRepository.findOne({ where: { default: 1 } });

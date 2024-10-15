@@ -24,7 +24,8 @@ describe('ZApiService', () => {
     accountData: {
       instance: 'test-instance',
       token: 'test-token',
-      cnpj: '12345678901234',
+      companyRegistrationNumber: '12345678901234',
+      clientToken: 'test-client',
     },
   };
 

@@ -44,9 +44,10 @@ export class ZApiService implements WhatsAppGateway {
     url: string,
     delay?: number,
   ): Promise<{ data: any; status: number }> {
+    delay = delay == 0 ? 0 : Math.floor(delay / 2);
     try {
       this.logger.log(
-        `[${params.id}] Sent TEXT message to ${params.message.to} with delay to next message ${delay || '0'}`,
+        `[${params.id}] Sent TEXT message to ${params.message.to} with delay ${delay || '0'}`,
       );
       const response: AxiosResponse = await lastValueFrom(
         this.httpService.post(
@@ -58,7 +59,7 @@ export class ZApiService implements WhatsAppGateway {
           },
           {
             headers: {
-              'Client-Token': EnvConfig.ZAPI_CLIENT_TOKEN,
+              'Client-Token': params.accountData.clientToken,
               'Content-Type': 'application/json',
             },
           },
@@ -84,8 +85,9 @@ export class ZApiService implements WhatsAppGateway {
   ): Promise<{ data: any; status: number }> {
     try {
       this.logger.log(
-        `[${params.id}] Sent ${params.message.type} message to ${params.message.to} with delay to next message ${delay || '0'}`,
+        `[${params.id}] Sent ${params.message.type} message to ${params.message.to} with delay ${delay || '0'}`,
       );
+      delay = delay == 0 ? 0 : Math.floor(delay / 2);
       const response: AxiosResponse = await lastValueFrom(
         this.httpService.post(
           url,
@@ -94,10 +96,11 @@ export class ZApiService implements WhatsAppGateway {
             [params.message.type]: params.message.file,
             delayMessage: delay,
             caption: params.message.message,
+            fileName: params.message.fileName,
           },
           {
             headers: {
-              'Client-Token': EnvConfig.ZAPI_CLIENT_TOKEN,
+              'Client-Token': params.accountData.clientToken,
               'Content-Type': 'application/json',
             },
           },

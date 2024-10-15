@@ -5,7 +5,7 @@ import { EStatus } from '../common/enums/status';
 
 export interface CompanyPayload {
   name: string;
-  cnpj: string;
+  companyRegistrationNumber: string;
   createdAt: Date;
   status: EStatus;
   deleted: boolean;
@@ -37,8 +37,8 @@ export class CompanyEntity {
     return this.props.name;
   }
 
-  public getCnpj(): string {
-    return this.props.cnpj;
+  public getCompanyRegistrationNumber(): string {
+    return this.props.companyRegistrationNumber;
   }
 
   public getCreatedAt(): Date {
@@ -61,8 +61,8 @@ export class CompanyEntity {
     this.props.name = value;
   }
 
-  public setCnpj(value: string): void {
-    this.props.cnpj = value;
+  public setCompanyRegistrationNumber(value: string): void {
+    this.props.companyRegistrationNumber = value;
   }
 
   public setCreatedAt(value: Date): void {

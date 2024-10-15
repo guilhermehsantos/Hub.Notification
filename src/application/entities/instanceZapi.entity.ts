@@ -10,6 +10,7 @@ export interface InstanceZapiPayload {
   createdBy: string;
   createdAt: Date;
   deleted: boolean;
+  clientToken: string;
 }
 
 export class InstanceZapiEntity {
@@ -64,6 +65,10 @@ export class InstanceZapiEntity {
     return this.props.deleted;
   }
 
+  public getClientToken(): string {
+    return this.props.clientToken;
+  }
+
   // Setters
   public setPhoneNumberId(value: string): void {
     this.props.phoneNumberId = value;
@@ -95,6 +100,10 @@ export class InstanceZapiEntity {
 
   public setDeleted(value: boolean): void {
     this.props.deleted = value;
+  }
+
+  public setClientToken(value: string): void {
+    this.props.clientToken = value;
   }
 
   // Methods

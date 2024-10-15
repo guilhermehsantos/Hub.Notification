@@ -23,7 +23,7 @@ export const AppDataSource = new DataSource({
     MessageTemplate,
     Product,
   ],
-  migrations: ['src/infra/database/typeORM/migrations/*.js'],
+  migrations: ['dist/infra/database/typeORM/migrations/*{.js,.ts}'],
   synchronize: false,
   logging: false,
   extra: {

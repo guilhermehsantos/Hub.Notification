@@ -11,10 +11,8 @@ import { AuthMiddleware } from './middlewares/auth.middleware';
 import { MessageController } from './controllers/message.controller';
 import { MessagingModule } from '../messaging/messaging.module';
 import { PublishMessageWhatsApp } from 'src/application/use-cases/messaging/publish-message.whatsapp';
-import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
 import { ConsumeMessageWhatsApp } from 'src/application/use-cases/messaging/consume-message.whatsapp';
 import { HttpModule as AxionsModule } from '@nestjs/axios';
-import { EnvConfig } from '../config/configuration';
 import { ApiServiceModule } from 'src/external/ZAPI/zapi.module';
 
 @Module({

@@ -15,8 +15,9 @@ export class ConsumeMessageWhatsApp {
   ) {}
   async execute(payload: MessageDTO, delay?: number): Promise<void> {
     try {
+      delay = delay || 0;
       const company = await this.companyGateway.getCompany({
-        cnpj: payload.company.cnpj,
+        companyRegistrationNumber: payload.company.companyRegistrationNumber,
       });
 
       if (!company) throw new Error('Company not found');
@@ -28,27 +29,37 @@ export class ConsumeMessageWhatsApp {
 
       if (!instanceZapi) throw new Error('Instance Zapi not found');
 
-      const response = await this.whatsAppGateway.sendMessage(
-        {
-          id: payload.id,
-          accountData: {
-            cnpj: company.getCnpj(),
-            instance: instanceZapi.getCode(),
-            token: instanceZapi.getToken(),
-          },
-          message: {
-            to: payload.to,
-            message: payload.message,
-            type: payload.type,
-            file: payload.file,
-          },
-        },
-        delay,
+      this.logger.log(
+        `[${payload.id}] Consume message to company ${company.getName()} - ${company.getCompanyRegistrationNumber()}`,
       );
+      new Promise(() =>
+        setTimeout(async () => {
+          const response = await this.whatsAppGateway.sendMessage(
+            {
+              id: payload.id,
+              accountData: {
+                companyRegistrationNumber:
+                  company.getCompanyRegistrationNumber(),
+                instance: instanceZapi.getCode(),
+                token: instanceZapi.getToken(),
+                clientToken: instanceZapi.getClientToken(),
+              },
+              message: {
+                to: payload.to,
+                message: payload.message,
+                type: payload.type,
+                file: payload.file,
+                fileName: payload.fileName,
+              },
+            },
+            delay,
+          );
 
-      const { data, status } = response;
-      if (!data?.messageId)
-        throw new Error(`[${payload.id}] Error on send message`);
+          const { data, status } = response;
+          if (!data?.messageId || status > 203)
+            throw new Error(`[${payload.id}] Error on send message`);
+        }, delay * 1000),
+      );
     } catch (error) {
       this.logger.error(`[${payload.id}]  Error on consume message`);
       throw new Error(`[${payload.id}]  ${error.message}`);

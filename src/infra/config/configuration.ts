@@ -22,17 +22,17 @@ export class EnvConfig {
   public static readonly RABBITMQ_URL_CONNECT = `amqp://${EnvConfig.RABBITMQ_USER}:${EnvConfig.RABBITMQ_PASS}@${EnvConfig.RABBITMQ_URL}`;
 
   public static readonly EXCHANGE = get('EXCHANGE').required().asString();
-  public static readonly WHATSAPP_QUEUE_HIGH_PRIORITY = get(
+  public static readonly WHATSAPP_QUEUE_HIGH_PRIORITY = `${get(
     'WHATSAPP_QUEUE_HIGH_PRIORITY',
   )
     .required()
-    .asString();
+    .asString()}${EnvConfig.NODE_ENV != 'production' ? '.homologation' : ''}`;
 
-  public static readonly WHATSAPP_QUEUE_LOW_PRIORITY = get(
+  public static readonly WHATSAPP_QUEUE_LOW_PRIORITY = `${get(
     'WHATSAPP_QUEUE_LOW_PRIORITY',
   )
     .required()
-    .asString();
+    .asString()}${EnvConfig.NODE_ENV != 'production' ? '.homologation' : ''}`;
 
   //database--------------------------------------------------------------------------------------
   public static readonly DATABASE_HOST = get('DATABASE_HOST')

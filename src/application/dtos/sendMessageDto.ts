@@ -5,10 +5,12 @@ export class SendMessageDTO {
     message: string;
     type: string; // 'text' | 'image' | 'document' | 'video' | 'audio' | 'location' | 'contact' | 'sticker' | 'gif' | 'reaction';
     file?: string;
+    fileName?: string;
   };
   public accountData: {
     instance: string;
     token: string;
-    cnpj: string;
+    clientToken: string;
+    companyRegistrationNumber: string;
   };
 }

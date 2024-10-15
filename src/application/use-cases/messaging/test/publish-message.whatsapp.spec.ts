@@ -38,7 +38,10 @@ describe('PublishMessageWhatsApp', () => {
     const mockPayload: MessageDTO = {
       id: '123',
       priority: EPriority.HIGH,
-      company: { cnpj: '123456789', id: randomUUID().toString() },
+      company: {
+        companyRegistrationNumber: '123456789',
+        id: randomUUID().toString(),
+      },
       to: 'recipient',
       message: 'Hello',
       type: 'text',
@@ -61,7 +64,10 @@ describe('PublishMessageWhatsApp', () => {
     const mockPayload: MessageDTO = {
       id: '123',
       priority: EPriority.LOW,
-      company: { cnpj: '123456789', id: randomUUID().toString() },
+      company: {
+        companyRegistrationNumber: '123456789',
+        id: randomUUID().toString(),
+      },
       to: 'recipient',
       message: 'Hello',
       type: 'text',

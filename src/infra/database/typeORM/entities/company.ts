@@ -14,7 +14,7 @@ export class Company {
   name: string;
 
   @Column({ type: 'varchar', length: 20 })
-  cnpj: string;
+  companyRegistrationNumber: string;
 
   @CreateDateColumn()
   createdAt: Date;

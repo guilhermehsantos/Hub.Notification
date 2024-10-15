@@ -5,13 +5,14 @@ export class MessageDTO {
   public id: string;
   public company: {
     id: string;
-    cnpj: string;
+    companyRegistrationNumber: string;
   };
   public template: string;
   public to: string;
   public message: string;
   public type: string;
   public file: string;
+  public fileName?: string;
   public priority: EPriority;
   public provider: EProvider;
 }

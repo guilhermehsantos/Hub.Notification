@@ -14,7 +14,7 @@ describe('SendMessageDTO', () => {
       accountData: {
         instance: 'instance_1',
         token: 'abc123token',
-        cnpj: '12345678901234',
+        companyRegistrationNumber: '12345678901234',
       },
     };
   });
@@ -27,7 +27,9 @@ describe('SendMessageDTO', () => {
     expect(sendMessageDTO.message.file).toBeUndefined();
     expect(sendMessageDTO.accountData.instance).toBe('instance_1');
     expect(sendMessageDTO.accountData.token).toBe('abc123token');
-    expect(sendMessageDTO.accountData.cnpj).toBe('12345678901234');
+    expect(sendMessageDTO.accountData.companyRegistrationNumber).toBe(
+      '12345678901234',
+    );
   });
 
   it('should handle optional file property in message', () => {
