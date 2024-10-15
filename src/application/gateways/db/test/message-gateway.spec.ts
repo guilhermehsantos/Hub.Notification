@@ -28,9 +28,10 @@ describe('MessageGateway', () => {
   });
 
   it('should not publish the message if no payload is provided', async () => {
-    await messageGateway.publishMessage(undefined);
+    const mockPayload: receiveMessageDTO = { id: null };
+    await messageGateway.publishMessage(mockPayload);
 
-    expect(messageGateway.publishMessage).toHaveBeenCalledWith(undefined);
+    expect(messageGateway.publishMessage).toHaveBeenCalledWith(mockPayload);
     expect(messageGateway.publishMessage).toHaveBeenCalledTimes(1);
   });
 

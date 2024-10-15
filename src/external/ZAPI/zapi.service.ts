@@ -1,10 +1,10 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { lastValueFrom } from 'rxjs';
 import { HttpService } from '@nestjs/axios';
-import { EnvConfig } from 'src/infra/config/configuration';
+import { EnvConfig } from '../../infra/config/configuration';
 import { AxiosResponse } from 'axios';
-import { SendMessageDTO } from 'src/application/dtos/sendMessageDto';
-import { WhatsAppGateway } from 'src/application/gateways/externals/whatsApp-gateway';
+import { SendMessageDTO } from '../../application/dtos/sendMessageDto';
+import { WhatsAppGateway } from '../../application/gateways/externals/whatsApp-gateway';
 
 enum ZAPIEndpoints {
   text = 'send-text',

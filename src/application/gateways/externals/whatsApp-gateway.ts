@@ -1,4 +1,4 @@
-import { SendMessageDTO } from 'src/application/dtos/sendMessageDto';
+import { SendMessageDTO } from '../../dtos/sendMessageDto';
 
 export abstract class WhatsAppGateway {
   abstract sendMessage(
