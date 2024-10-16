@@ -3,13 +3,33 @@ import { PostNewMessageDto } from '../dtos/message/new-message.dto';
 import { PublishMessageWhatsApp } from 'src/application/use-cases/messaging/publish-message.whatsapp';
 import { randomUUID } from 'crypto';
 import { MessageDTO } from 'src/infra/messaging/dtos/messageDTO';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBody,
+  ApiHeader,
+} from '@nestjs/swagger';
 
+@ApiTags('Message')
 @Controller('message')
 export class MessageController {
   logger: Logger = new Logger(MessageController.name);
+
   constructor(private messagePublisher: PublishMessageWhatsApp) {}
 
   @Post('new-message')
+  @ApiOperation({ summary: 'Enviar uma nova mensagem.' })
+  @ApiResponse({
+    status: 201,
+    description: 'Mensagem enviada com sucesso.',
+    example: { id: 'string', mensagem: 'string' },
+  })
+  @ApiBody({ type: PostNewMessageDto })
+  @ApiHeader({
+    name: 'x-product-key',
+    description: 'Chave de autenticação por produto',
+  })
   async PostNewMessage(
     @Body() body: PostNewMessageDto,
   ): Promise<{ id: string; mensagem: string }> {

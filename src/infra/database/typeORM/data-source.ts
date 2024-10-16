@@ -14,7 +14,6 @@ export const AppDataSource = new DataSource({
   username: EnvConfig.DATABASE_USERNAME,
   password: EnvConfig.DATABASE_PASSWORD,
   database: EnvConfig.DATABASE,
-  // entities: ['src/infra/database/typeORM/entities/*.{ts,js}'],
   entities: [
     Company,
     PhoneNumber,
@@ -25,6 +24,7 @@ export const AppDataSource = new DataSource({
   ],
   migrations: ['dist/infra/database/typeORM/migrations/*{.js,.ts}'],
   synchronize: false,
+  migrationsRun: true,
   logging: false,
   extra: {
     ssl: {

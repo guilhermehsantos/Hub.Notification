@@ -7,6 +7,7 @@ export class EnvConfig {
   //server----------------------------------------------------------------------------------------
   public static readonly PORT = get('PORT').required().asPortNumber();
   public static readonly NODE_ENV = get('NODE_ENV').required().asString();
+  public static readonly API_PREFIX = get('API_PREFIX').required().asString();
 
   //rabbitMQ--------------------------------------------------------------------------------------
   public static readonly RABBITMQ_URL = get('RABBITMQ_URL')

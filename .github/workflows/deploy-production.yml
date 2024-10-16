@@ -1,0 +1,99 @@
+# on:
+#   push:
+#     branches:
+#       - main
+
+# name: Deploy to Amazon ECS
+
+# jobs:
+#   deploy:
+#     name: Deploy
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v2
+
+#       - name: Get Branch Name
+#         id: get_branch
+#         run: |
+#           if [ "${GITHUB_HEAD_REF}" != "" ]; then
+#             echo "::set-output name=branch::${GITHUB_HEAD_REF}"
+#           else
+#             BRANCH_NAME=$(git log -1 --pretty=%B | sed 's/^.* from //')
+#             echo "::set-output name=branch::${BRANCH_NAME}"
+#           fi
+
+#       - name: Extract Tag from Branch
+#         id: extract_tag
+#         run: |
+#           echo "Branch name is ${{ steps.get_branch.outputs.branch }}"
+#           if [[ "${{ steps.get_branch.outputs.branch }}" =~ release-([0-9]+\.[0-9]+\.[0-9]+) ]]; then
+#             TAG="${BASH_REMATCH[1]}"
+#             echo "::set-output name=tag::$TAG"
+#           else
+#             echo "Branch name does not match release-x.x.x pattern"
+#             exit 1
+#           fi
+
+#       - name: Create and Push Tag
+#         env:
+#           GITHUB_ACTOR: ${{ github.actor }}
+#         run: |
+#           git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+#           git config --global user.name "${GITHUB_ACTOR}"
+#           git tag ${{ steps.extract_tag.outputs.tag }}
+#           git push origin ${{ steps.extract_tag.outputs.tag }}
+
+#       - name: Check Latest Tag
+#         env:
+#           RELEASE_VERSION: ${{ steps.extract_tag.outputs.tag }}
+#         run: |
+#           echo $RELEASE_VERSION
+#           echo ${{ steps.extract_tag.outputs.tag }}
+
+#       - name: Remove branch
+#         run: git push -d origin refs/heads/release-${{ steps.extract_tag.outputs.tag }}
+
+#       - name: Create GitHub release
+#         id: create_release
+#         uses: actions/create-release@v1
+#         env:
+#           GITHUB_TOKEN: ${{ secrets.QYONDEVOPS_TOKEN }}
+#         with:
+#           tag_name: ${{ steps.extract_tag.outputs.tag }}
+#           release_name: ${{ steps.extract_tag.outputs.tag }}
+#           body_path: ./release/release-${{ steps.extract_tag.outputs.tag }}.md
+#           draft: false
+#           prerelease: false
+
+#       - name: Configure AWS credentials
+#         uses: aws-actions/configure-aws-credentials@v1
+#         with:
+#           aws-access-key-id: ${{ secrets.AWS_CRM_ACCESS_KEY_ID }}
+#           aws-secret-access-key: ${{ secrets.AWS_CRM_SECRET_ACCESS_KEY }}
+#           aws-region: us-west-2
+
+#       - name: Login to Amazon ECR
+#         id: login-ecr
+#         uses: aws-actions/amazon-ecr-login@v1
+
+#       - name: Build, tag, and push image to Amazon ECR
+#         id: build-image
+#         env:
+#           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+#           ECR_REPOSITORY: qyon-crm-notifications/production
+#           IMAGE_TAG: ${{ steps.extract_tag.outputs.tag }}
+#         run: |
+#           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+#           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:latest .
+#           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+#           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+#           echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+#           echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:latest"
+
+#       - name: Deploy to ECS
+#         id: deploy-ecs
+#         run: |
+#           echo "Deploy application to ECS"
+#           aws ecs update-service --cluster qyon-crm --service qyon-crm-notifications-production-svc --force-new-deployment

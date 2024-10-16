@@ -8,12 +8,8 @@ RUN npm install
 
 COPY . .
 
-RUN npm run migration:generate -- -d src/infra/database/typeORM/data-source.ts || true
-
 RUN npm run build
 
-RUN npm run migration:run -- -d src/infra/database/typeORM/data-source.ts || true
-
-EXPOSE 3002
+EXPOSE 80
 
 CMD ["npm", "start"]

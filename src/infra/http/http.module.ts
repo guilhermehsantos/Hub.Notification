@@ -14,6 +14,7 @@ import { PublishMessageWhatsApp } from 'src/application/use-cases/messaging/publ
 import { ConsumeMessageWhatsApp } from 'src/application/use-cases/messaging/consume-message.whatsapp';
 import { HttpModule as AxionsModule } from '@nestjs/axios';
 import { ApiServiceModule } from 'src/external/ZAPI/zapi.module';
+import { HealthController } from './controllers/health.controller';
 
 @Module({
   imports: [
@@ -22,7 +23,7 @@ import { ApiServiceModule } from 'src/external/ZAPI/zapi.module';
     AxionsModule,
     ApiServiceModule,
   ],
-  controllers: [ProductController, MessageController],
+  controllers: [ProductController, MessageController, HealthController],
   providers: [GetProductByKey, PublishMessageWhatsApp, ConsumeMessageWhatsApp],
   exports: [GetProductByKey, PublishMessageWhatsApp, ConsumeMessageWhatsApp],
 })
